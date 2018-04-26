@@ -1,7 +1,8 @@
-Este ejemplo consiste en combinar Google charts utilizando los datos provenientes de una hoja de cálculo de Google Docs
-Además esta hoja de cálculo se va rellenando de información ya que está conectada con un formulario de google docs
+Este ejemplo consiste en crear una visualización con Google charts utilizando los datos provenientes de una hoja de cálculo de Google Drive
 
-Comprobamos que funciona el ejemplo inicial (paso-1.html)
+La hoja de cálculo se puede editar en cualquier momento, y el gráfico se refresca automáticamente.
+
+Para empezar comprobaremos que funciona el ejemplo inicial (paso-1.html)
 
 Luego crearemos una hoja de cálculo en google drive
 Atención: Para que sea visible tenemos que hacer 2 cosas,
