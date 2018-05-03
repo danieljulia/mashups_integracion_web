@@ -1,0 +1,32 @@
+<!--
+Aqui lo que cambia es que la llamada no es a la API de flickr
+sinó a un "feed" RSS
+-->
+
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  
+  <script>
+  $(document).ready(function(){
+  	var tag="barcelona";
+    $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?tags="+tag+"&tagmode=any&format=json&jsoncallback=?",
+        function(data){
+         var txt="";
+          $.each(data.items, function(i,item){
+          //título elemento item.title
+          	txt+="<a href='"+item.link+"'><img src='"+item.media.m+"'/></a>";
+     
+          });
+         
+          $('#images').html(txt);
+        });
+  });
+  </script>
+  <style>img{ height: 100px; float: left; }</style>
+</head>
+<body>
+  <div id="images">
+  </div>
+</body>
+</html>

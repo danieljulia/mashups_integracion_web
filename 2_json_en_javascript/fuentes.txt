@@ -1,0 +1,43 @@
+* Fuentes json
+
+
+Feed Flickr filtrado por un tag
+
+http://api.flickr.com/services/feeds/photos_public.gne?tags=barcelona&tagmode=any&format=json&jsoncallback=?
+
+Flickr API busqueda de fotos por tag
+
+https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c8abcb2729a2b86f6c4a3492299cdeaf&tags=barcelona&extras=url_s&format=json&nojsoncallback=1
+
+
+* weather
+
+https://api.darksky.net/forecast/6da55ae4d3b635780617e4cf3bd9d2ca/37.8267,-122.4233
+
+https://darksky.net/dev/docs/forecast
+
+* the movie db
+
+https://www.themoviedb.org/
+
+
+
+busqueda
+
+https://api.themoviedb.org/3/search/movie?api_key={api_key}&query=Jack+Reacher
+
+
+https://api.themoviedb.org/3/search/movie?api_key=8b99319bc41fc6d9113842084d6b88f6&query=Jack+Reacher
+
+Buscar por actor
+
+https://api.themoviedb.org/3/search/person?api_key=8b99319bc41fc6d9113842084d6b88f6&query=Brad+Pitt
+
+detalles
+
+https://api.themoviedb.org/3/movie/343611?api_key={api_key}
+
+
+Ejemplos  de llamadas
+
+https://www.themoviedb.org/documentation/api/discover

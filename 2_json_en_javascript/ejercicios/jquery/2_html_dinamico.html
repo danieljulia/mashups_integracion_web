@@ -1,0 +1,29 @@
+<!--
+este ejemplo usa jquery para crear dinámicamente el contenido
+del div images 
+-->
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  
+  <script>
+  $(document).ready(function(){ //cuando la página esté cargada..
+	//crear una variable txt para almacenar el html
+  	 var txt="<h1>Una prueba</h1><ul>";
+	 //un bucle para probar
+	 for(var i=0;i<10;i++){
+		txt+="<li>texto "+i+"</li>";
+		console.log(i);
+	 }
+	 txt+="</ul>";
+	 
+	 //substituir en el contenido de este div por lo que hay en txt
+	 $('#images').html(txt);
+  });
+  </script>
+  <style>img{ height: 100px; float: left; }</style>
+</head>
+<body>
+  <div id="images">
+  </div>
+</body>
+</html>

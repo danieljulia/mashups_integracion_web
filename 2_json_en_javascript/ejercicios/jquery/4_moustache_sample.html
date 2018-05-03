@@ -1,0 +1,31 @@
+<!--
+Ejemplo con moustache.js
+https://github.com/janl/mustache.js/
+
+-->
+
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.js"></script>
+
+  <script>
+  $(document).ready(function(){
+  	var tag="barcelona";
+    $.getJSON("https://api.themoviedb.org/3/search/person?api_key=8b99319bc41fc6d9113842084d6b88f6&query=Brad+Pitt&callback=?",
+        function(datos){
+
+        		console.log(datos);
+        		var output = Mustache.render("{{#known_for}} <li>{{title}} <img src='http://image.tmdb.org/t/p/w185/{{poster_path}}'><p>{{overview}}</p></li> {{/known_for}}", datos.results[0]);
+        		$('#images').html(output);
+
+        });
+  });
+  </script>
+
+</head>
+<body>
+  <div id="images">
+  </div>
+</body>
+</html>

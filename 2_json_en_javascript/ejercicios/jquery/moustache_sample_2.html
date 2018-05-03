@@ -1,0 +1,41 @@
+<!--
+Ejemplo con moustache.js
+https://github.com/janl/mustache.js/
+
+-->
+
+<html>
+<head>
+<style>
+.post{
+	float:left;
+}
+</style>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.js"></script>
+
+  <script>
+  $(document).ready(function(){
+  	var tag="barcelona";
+    $.getJSON("https://api.instagram.com/v1/tags/"+tag+"/media/recent?count=20&client_id=128d96b790704f5db73b5a3dc706831a&callback=?",
+        function(datos){
+        	var template = $('#template').html();
+				  Mustache.parse(template);   // optional, speeds up future uses
+				  var rendered = Mustache.render(template, datos);
+				  $('#images').html(rendered);
+        });
+  });
+  </script>
+
+</head>
+<body>
+  <div id="images">Loading...</div>
+  <script id="template" type="x-tmpl-mustache">
+{{#data}}
+<div class="post">
+ <a href='{{link}}'><img src='{{images.low_resolution.url}}'></a>
+</div>
+ {{/data}}
+  </script>
+</body>
+</html>

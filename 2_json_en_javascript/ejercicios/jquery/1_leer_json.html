@@ -1,0 +1,26 @@
+<!--
+-->
+
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+
+  <script>
+  $(document).ready(function(){
+  	var query="madonna";
+
+	var uri=""; //aqui tenemos que escribir la url
+
+    $.getJSON(uri,
+        function(data){
+          console.log(data); //mostrará el resultado en la consola
+        });
+  });
+  </script>
+  <style>img{ height: 100px; float: left; }</style>
+</head>
+<body>
+  <div id="tracks">
+  </div>
+</body>
+</html>

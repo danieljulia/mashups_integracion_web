@@ -1,0 +1,39 @@
+<!--
+la clave api habria que pedirla en flickr otra vez
+
+https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c8abcb2729a2b86f6c4a3492299cdeaf&tags=barcelona&extras=url_s&format=json&nojsoncallback=1
+-->
+
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  
+  <script>
+  $(document).ready(function(){
+  	var tag="barcelona";
+	
+	var uri="https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c8abcb2729a2b86f6c4a3492299cdeaf&tags="+tag+"&extras=url_s&format=json&nojsoncallback=1";
+	
+    $.getJSON(uri,
+        function(data){
+         var txt="";
+          $.each(data.photos.photo, function(i,item){
+  
+		  //de la documentación de la api
+		  var link="http://flickr.com/photo.gne?id="+item.id;
+		  
+          	txt+="<a href='"+link+"'><img src='"+item.url_s+"'/></a>";
+     
+          });
+         
+          $('#images').html(txt);
+        });
+  });
+  </script>
+  <style>img{ height: 100px; float: left; }</style>
+</head>
+<body>
+  <div id="images">
+  </div>
+</body>
+</html>
