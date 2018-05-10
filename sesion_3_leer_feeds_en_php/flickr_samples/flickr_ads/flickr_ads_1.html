@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+                    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  
+  <script>
+  /* 
+  paso 1:
+  Utilizando el api de flickr buscar imágenes con un tag determinado (barcelona)
+  y mostrar en el html los resultados
+  */
+  
+  $(document).ready(function(){
+    $.getJSON("http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=803c9828d52e6a1bb961e9d8b337caa1&tags=barcelona&extras=url_m&format=json&nojsoncallback=1",
+        function(data){
+			//ver el formato interno del json para descubrir la estructura!
+         var txt="<ul>";
+	
+          $.each(data.photos.photo, function(i,item){
+			
+			
+				txt+="<li><a title=\""+(item.title)+"\"href='"+item.link+"'><img src='"+item.url_m+"'/></a></li>";
+		
+			
+          });
+			txt+="</ul>";
+          
+		  $('#images').html(txt);
+        });
+  });
+  </script>
+  <style>
+  ul{
+  list-style:none;
+  }
+  
+  img{
+  border:6px;
+  border-style:solid;
+  border-color:#eeeeee;
+  }
+  
+  
+  </style>
+</head>
+<body>
+  <div id="images">
+  </div>
+</body>
+</html>

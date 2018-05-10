@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+                    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  
+  <script>
+  /* 
+  paso 5:
+
+  - Buscar frases y que se vayan cambiando periodicamente
+	Googleando --> http://en.wikiquote.org/wiki/Advertising_slogans
+  - cada vez que se recarga se busca un tag diferente
+  */
+  
+  var frases=[
+  ['diamond',"A diamond is forever"],
+  ['mind',"A mind is a terrible thing to waste"],
+  ['coke'," Always Coca-Cola"],
+  ['apple',"An apple a day keeps the doctor away."],
+  ['youcan',"Be all that you can be."],
+  ['obsession',"Between love and madness lies Obsession."],
+  ['breakfast',"Breakfast of Champions"],
+  ['connecting',"Connecting People"],
+  ['mcdonalds',"Did somebody say McDonald's?"],
+  ['yahoo',"Do you...Yahoo!?"],
+  ['chikin',"Eat Mor Chikin!"],
+  ['kiss',"Every kiss begins with Kay"],
+  ['kitkat',"Give me a break"],
+  ];
+
+  /* tambien podria ser var obj = {"one":"1","two":"3","three":"5","four":"1","five":"6"}; */
+
+  $(document).ready(function(){
+  
+    start();
+	
+
+  });
+  
+  function start(){
+	//en lugar de fijar el tag escoger uno al azar!!
+	var indx=Math.floor(Math.random()*frases.length);
+
+		var tag=frases[indx][0];
+		
+		var frase=frases[indx][1];
+	
+		$("#frase").html(frase);
+	//alert(tag);
+	buscaFoto(tag);
+	//poner la frase!
+
+	
+	
+  }
+  
+  function buscaFoto(tag){
+      $.getJSON("http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=803c9828d52e6a1bb961e9d8b337caa1&tags="+tag+"&per_page=10&sort=interestingness-desc&extras=url_l&format=json&nojsoncallback=1",
+        function(data){
+			//ver el formato interno del json para descubrir la estructura!
+        
+			//alert("numero de fotos "+data.photos.photo.length);
+			
+		//escoger una de las fotos...
+		var indx=Math.floor(Math.random()*data.photos.photo.length);
+		
+		var item=data.photos.photo[indx];
+        
+		var txt="";
+		txt+="<a title=\""+(item.title)+"\"href='http://flickr.com/photo.gne?id="+item.id+"'><img src='"+item.url_l+"'/></a>";
+	
+		  $('#images').html(txt);
+        });
+  }
+  
+  </script>
+  <style>
+  body{
+	background-color:#000000;
+  }
+  ul{
+  list-style:none;
+  }
+  
+  img{
+  border:16px;
+  border-style:solid;
+  border-color:#333333;
+  width:900px;
+  }
+
+  #page{
+	margin: 0 auto;
+	width:900px;
+  }
+  
+  #frase{
+	  font-family: georgia,"times new roman",serif;
+	  font-size: 2.8em;
+	  color:#aaaaaa;
+  }
+  
+  </style>
+</head>
+<body>
+<div id="page">
+  <div id="images">
+  cargando...
+  </div>
+  <div id="frase">
+ cargando...
+  </div>
+  </div>
+</body>
+</html>

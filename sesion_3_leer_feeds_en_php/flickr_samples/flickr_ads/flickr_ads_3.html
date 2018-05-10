@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+                    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  
+  <script>
+  /* 
+  paso 3:
+  
+  - Buscar 5 fotos pero mostrar una de ellas aleatoriamente
+  - Presentarla más en grande
+		Buscar la imagen url_l en lugar de url_m
+  
+  */
+  
+  $(document).ready(function(){
+  
+    start();
+	
+
+  });
+  
+  function start(){
+	buscaFoto("barcelona");
+  }
+  
+  function buscaFoto(tag){
+      $.getJSON("http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=803c9828d52e6a1bb961e9d8b337caa1&tags="+tag+"&per_page=100&sort=interestingness-desc&extras=url_l&format=json&nojsoncallback=1",
+        function(data){
+			//ver el formato interno del json para descubrir la estructura!
+        
+	
+		//escoger una de las fotos...
+		var indx=Math.floor(Math.random()*data.photos.photo.length);
+		
+		var item=data.photos.photo[indx];
+        
+		var txt="";
+		txt+="<a title=\""+(item.title)+"\"href='"+item.link+"'><img src='"+item.url_l+"'/></a>";
+	
+		  $('#images').html(txt);
+        });
+  }
+  
+  </script>
+  <style>
+  ul{
+  list-style:none;
+  }
+  
+  img{
+  border:6px;
+  border-style:solid;
+  border-color:#eeeeee;
+  }
+  
+  
+  </style>
+</head>
+<body>
+  <div id="images">
+  </div>
+</body>
+</html>
