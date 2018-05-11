@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+                    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  
+  <script>
+  /* 
+  paso 1:
+  - Formulario para poder escribir y detectar el tag que escribes, mirar si es uno de los tags de la foto
+	
+
+
+	
+ 
+  */
+  var tags; //variable donde guardo los tags
+
+  $(document).ready(function(){
+    buscaFoto();
+   
+ 
+	
+
+  });
+  
+
+  function buscaFoto(){
+      $.getJSON("http://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=xxx&per_page=100&extras=tags,url_m&format=json&nojsoncallback=1",
+        function(data){
+			//ver el formato interno del json para descubrir la estructura!
+        
+			//alert("numero de fotos "+data.photos.photo.length);
+			
+		//escoger una de las fotos...
+		var indx=Math.floor(Math.random()*data.photos.photo.length);
+		
+		var item=data.photos.photo[indx];
+        
+		var txt="";
+		txt+="<a title=\""+(item.title)+"\"href='http://flickr.com/photo.gne?id="+item.id+"'><img width='400' src='"+item.url_m+"'/></a>";
+	
+		  $('#images').html(txt);
+		  tags=item.tags.split(" ");
+        });
+  }
+  
+
+  function miraTag(){
+    if( verificaTag( $('#tag').val() )){
+	
+		alert("muy bien");
+	}else{
+		alert("sigue probando..");
+		$('#tag').val() ="";
+	
+	}
+  }
+  
+  function verificaTag(tag){
+	for(var i=0;i<tags.length;i++){
+		if(tags[i]==tag) return true;
+	}
+	return false;
+  }
+  
+  </script>
+  <style>
+  body{
+	background-color:#000000;
+  }
+  ul{
+  list-style:none;
+  }
+  
+  img{
+  border:16px;
+  border-style:solid;
+  border-color:#333333;
+  width:900px;
+  }
+
+  #page{
+	margin: 0 auto;
+	width:900px;
+  }
+  
+  #frase{
+	  font-family: georgia,"times new roman",serif;
+	  font-size: 2.8em;
+	  color:#aaaaaa;
+  }
+  
+  </style>
+</head>
+<body>
+<div id="page">
+
+<form id="myform" action="javascript:miraTag()">
+<label for="tag">Tag?</label>
+<input type="text" name="tag" id="tag"/>
+</form>
+
+  <div id="images">
+  cargando...
+  </div>
+  <div id="frase">
+ cargando...
+  </div>
+  </div>
+</body>
+</html>

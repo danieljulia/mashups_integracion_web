@@ -13,18 +13,9 @@ if(isset($_GET['tag'])){
 
 }
 
-$uri="https://api.instagram.com/v1/tags/".$tag."/media/recent?client_id=128d96b790704f5db73b5a3dc706831a";
-
-
-/*
-$user="ganyet";
-$requser="https://api.instagram.com/v1/users/search?q=".$user."&client_id=99e92b11c3884ed480f063ccac83ac51";
-$res=doCurl($requser);
-$user_data=json_decode($res);
-$user_id=$user_data->data[0]->id;
-$uri="https://api.instagram.com/v1/users/".$user_id."/media/recent?client_id=99e92b11c3884ed480f063ccac83ac51";
-*/
-//print_r($user_id);
+$apikey="c8abcb2729a2b86f6c4a3492299cdeaf";
+$uri="https://api.flickr.com/services/rest/?method=flickr.photos.search&per_page=20&api_key=".$apikey."&tags=".$tag;
+$uri.="&extras=url_m,tags&format=json&nojsoncallback=1";
 
 //print $uri;
 $res=file_get_contents($uri);
@@ -64,11 +55,11 @@ body{
 
 <div id="magazine">
 	<?php
-	foreach($data->data as $item):
+	foreach($data->photos->photo as $item):
 	?>
-	<div style="background-image:url(<?= $item->images->standard_resolution->url?>);"></div>
+	<div style="background-image:url(<?= $item->url_m?>);"></div>
 	<?php
-	endforeach;
+	endforeach;	
 	?>
 
 

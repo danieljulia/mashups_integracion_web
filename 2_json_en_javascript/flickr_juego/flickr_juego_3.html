@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+                    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  
+  <script>
+  /* 
+  paso 3:
+  
+  - poner un contador de tiempo
+
+	
+
+
+	
+ 
+  */
+  var tags; //variable donde guardo los tags
+  var t=30; //contador de tiempo
+  $(document).ready(function(){
+    buscaFoto();
+    setInterval("update()",1000); //llama a update cada 1000ms=1s
+ 
+	
+
+  });
+  
+function update(){
+   t--;
+   $("#time").html(t);
+}
+
+  function buscaFoto(){
+      $.getJSON("http://api.flickr.com/services/rest/?method=flickr.interestingness.getList&api_key=xxx&per_page=100&extras=tags,url_m&format=json&nojsoncallback=1",
+        function(data){
+		 	//ver el formato interno del json para descubrir la estructura!
+        
+			//alert("numero de fotos "+data.photos.photo.length);
+			
+		//escoger una de las fotos...
+		var indx=Math.floor(Math.random()*data.photos.photo.length);
+		
+		var item=data.photos.photo[indx];
+        
+		var txt="";
+		txt+="<a title=\""+(item.title)+"\"href='http://flickr.com/photo.gne?id="+item.id+"'><img width='400' src='"+item.url_m+"'/></a>";
+	
+		  $('#images').html(txt);
+		  tags=item.tags.split(" ");
+		  
+		  $("#frase").html(item.title);
+        });
+  }
+  
+
+  function miraTag(){
+    if( verificaTag( $('#tag').val() )){
+	
+		alert("muy bien");
+	}else{
+		alert("sigue probando..");
+		$('#tag').val() ="";
+	
+	}
+  }
+  
+  function verificaTag(tag){
+	for(var i=0;i<tags.length;i++){
+		if(tags[i]==tag) return true;
+	}
+	return false;
+  }
+  
+  </script>
+  <style>
+  *{
+  color:#fff;
+  }
+  body{
+	background-color:#000000;
+  }
+  ul{
+  list-style:none;
+  }
+  
+  img{
+  border:16px;
+  border-style:solid;
+  border-color:#333333;
+  width:900px;
+  }
+
+  #page{
+	margin: 0 auto;
+	width:900px;
+  }
+  
+  #frase{
+	  font-family: georgia,"times new roman",serif;
+	  font-size: 2.8em;
+	  color:#aaaaaa;
+  }
+  
+  #superior{
+  	width:900px;
+  	background-color:#999;
+    overflow:hidden;
+  }
+  #myform{
+  width:300px;
+  padding:10px;
+  float:left;
+  
+  }
+  #tag{
+  color:#000;
+  }
+  #time{
+   float:right;
+   font-size: 2.0em;
+   margin-right:20px;
+   
+  }
+  </style>
+</head>
+<body>
+<div id="page">
+<div id="superior">
+<form id="myform" action="javascript:miraTag()">
+<label for="tag">Tag?</label>
+<input type="text" name="tag" id="tag"/>
+</form>
+<div id="time">30</div>
+</div>
+
+  <div id="images">
+  cargando...
+  </div>
+  <div id="frase">
+ cargando...
+  </div>
+  </div>
+</body>
+</html>

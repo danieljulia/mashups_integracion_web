@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+                    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  
+  <script>
+  /* lista de feeds de flickr
+  http://www.flickr.com/services/feeds/docs/photos_public/
+  
+  hay que obtener id de usuario en flickr (no está muy claro donde)..
+  por ejemplo este es el link de eliminar contacto en el perfil
+  donde se ve el id (el nombre de usuario no sirve)
+  http://www.flickr.com/ignore.gne?id=46344627@N02
+  
+  por tanto la llamada json seria esta
+  http://api.flickr.com/services/feeds/photos_public.gne?id=cambra_barcelona&format=json&jsoncallback=?
+  
+  Vamos a crear una lista "ul" con las 3 ultimas fotos de este usuario:
+  */
+  
+  $(document).ready(function(){
+    $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?id=46344627@N02&format=json&jsoncallback=?",
+        function(data){
+         var txt="<ul>";
+		 var i=0;
+          $.each(data.items, function(i,item){
+			
+			if(i<3){
+				txt+="<li><a title=\""+(item.title)+"\"href='"+item.link+"'><img width='120' src='"+item.media.m+"'/></a></li>";
+			}
+			i++;
+			
+          });
+			txt+="</ul>";
+          
+		  $('#images').html(txt);
+        });
+  });
+  </script>
+  <style>
+  ul{
+  list-style:none;
+  }
+  
+  img{
+  border:6px;
+  border-style:solid;
+  border-color:#eeeeee;
+  }
+  
+  
+  </style>
+</head>
+<body>
+  <div id="images">
+  </div>
+</body>
+</html>
