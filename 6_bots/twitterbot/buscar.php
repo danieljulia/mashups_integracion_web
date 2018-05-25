@@ -1,32 +1,22 @@
 <?php
 require "config.php";
-
+require "twitteroauth/twitteroauth.php";
 //buscar twitts con un tag y una posición determinadas..
-$tag="gat";
+$tag="barcelona";
 
-//centro barcelona y 10km a la redonda
-$geocode="&geocode=41.387917,2.1699187,10km";
-$url="http://search.twitter.com/search.json?q=".$tag.$geocode."&rpp=10";
+$connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN,OAUTH_SECRET);
+$content = $connection->get('search/tweets',array(
+	'q'=>"%20".$tag."%20",
+	'geocode'=>'41.387917,2.1699187,10km')
+);
+$user="";
 
-//no funciona en este servidor -> $content=file_get_contents($url);
+//print_r($content);
 
-//mÃ©todo alternativo
-$content=doCurl($url);
-
-
-$data=json_decode($content);
-
-foreach($data->results as $twitt){
-	print $twitt->from_user;
-	print "\r\n".$twitt->created_at;
-	$dt=strtotime( $twitt->created_at)-time();
-	//si llamo al cron cada 5 min-- 5x60=300 segundos
-	if($dt<300) print "aqui lanzaria el twitt";
-
+foreach($content->statuses as $twitt){
+	echo "<li>";
+	echo $twitt->user->screen_name;
+	echo ": ";
+	echo $twitt->text;
+	echo "</li>";
 }
-
-
-print_r($data); // para ver que contiene data
-
-
-?>

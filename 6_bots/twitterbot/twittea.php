@@ -1,4 +1,6 @@
 <?php
+/** este ejemplo publica un twitt */
+
 require "config.php";
 require "twitteroauth/twitteroauth.php";
 

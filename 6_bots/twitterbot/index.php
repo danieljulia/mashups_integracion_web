@@ -4,57 +4,52 @@ require "twitteroauth/twitteroauth.php";
 
 
 
-
-//buscar twitts con un tag y una posiciï¿½n determinadas..
+//buscar twitts con un tag y una posición determinadas..
 $tag="gat";
 
-//centro barcelona y 10km a la redonda
-$geocode="&geocode=41.387917,2.1699187,10km";
-$url="http://search.twitter.com/search.json?q=".$tag.$geocode."&rpp=10";
-
-//no funciona en este servidor -> $content=file_get_contents($url);
-
-//mï¿½todo alternativo
-$content=doCurl($url);
+$connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN,OAUTH_SECRET);
+$content = $connection->get('search/tweets',array(
+	'q'=>"%20".$tag."%20",
+	'geocode'=>'41.387917,2.1699187,10km'));
 
 
-$data=json_decode($content);
 
 $user="";
-foreach($data->results as $twitt){
-	print $twitt->from_user;
+foreach($content->statuses as $twitt){
+	print $twitt->user->screen_name;	
+	//print_r($twitt);
 	print "\r\n".$twitt->created_at;
 	$dt=strtotime( $twitt->created_at)-time();
+	print $dt;
+
 	//si llamo al cron cada 30 min-- 30x60=1800 segundos
-	if( strtolower($twitt->from_user)!="basiliobdn"){ //atenciï¿½n!!
-		if($dt<1800){
-			$user=$twitt->from_user;
-			print "Ha encontrado este twitt ".$twitt->text." del usuario ".$twitt->from_user;
-			break; //sale del bucle, sï¿½lo hago un twitt
+	if( strtolower($twitt->user->screen_name!="basiliobdn")){ //atención!!
+		if($dt<1800){ //60*30 cada 30min
+			$user=$twitt->user->screen_name;
+			print "<br><br>Ha encontrado este twitt <h1>".$twitt->text." del usuario ".$twitt->user->screen_name."</h1>";
+			print "<br>";
+			break; //sale del bucle, sólo hago un twitt
 
 		}
 	}
 }
 
 
+
 if($user!=""){ //si ha encontrado un twitt apto
-
-	$connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_SECRET);
+ 
 	//$content = $connection->get('account/verify_credentials');
+ 
+	$res=$connection->post('statuses/update', array('status' => utf8_encode("hola @".$user.", oi que sóc maco? (perdona sóc un bot i m'estan provant, :=) la culpa és teva per dir 'gat')")));
 
-	$res=$connection->post('statuses/update', array('status' => utf8_encode("hola @".$user.", oi que sï¿½c maco? (perdona sï¿½c un bot i m'estan provant, :=) la culpa ï¿½s teva per dir 'gat')")));
+	print_r($res);
+	
 
-	//print_r($res);
+	//seguir a este usuario (opcional)
+	$res=$connection->post('friendships/create', array('screen_name'=>$user));
 
-
+	print_r($res);
 }
 
-function doCurl($url){
-	$ch = curl_init(); // open curl session
-	// set curl options
-	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	$data = curl_exec($ch); // execute curl session
-	curl_close($ch); // close curl session
-	return $data;
-}
+
+  
